@@ -1,7 +1,9 @@
+# Pact Preflight Minimum Reproducible Example
+
 This reproduces an issue where when the mock server has CORS enabled, it fails with the `OPTIONS` preflight request.
 
-Service tested: _./src/app/services/api.service.ts_
-Pact test: _./pact/preflight.pact.spec.ts_
+- Service tested: _./src/app/services/api.service.ts_
+- Pact test: _./pact/preflight.pact.spec.ts_
 
 Reproduce in this repo:
 
