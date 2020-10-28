@@ -1,27 +1,37 @@
-# Ngrx
+This reproduces an issue where when the mock server has CORS enabled, it fails with the `OPTIONS` preflight request.
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 7.1.0.
+Service tested: _./src/app/services/api.service.ts_
+Pact test: _./pact/preflight.pact.spec.ts_
 
-## Development server
+Reproduce in this repo:
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+1. `npm install`
+2. `npm run pact`
 
-## Code scaffolding
+See Pact `header` mismatches and unexpected `OPTIONS`.
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+```
+Mock server failed with the following mismatches:
 
-## Build
+  1) The following request was not expected:
+      Method: OPTIONS
+      Path: /api/items
+      Headers:
+        access-control-request-headers: Authorization, Accept-Version
+        access-control-request-method: GET
+        connection: keep-alive
+        content-length: 0
+        host: 127.0.0.1:8889
+        origin: http://localhost
+        user-agent: Mozilla/5.0 (darwin) AppleWebKit/537.36 (KHTML, like Gecko) jsdom/16.4.0
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
-
-## Running unit tests
-
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
-
-## Running end-to-end tests
-
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+  2) The following request was expected but not received:
+      Method: GET
+      Path: /api/items
+      Query String:
+      Headers:
+        Accept: application/json;v=3
+        Accept-Version: 1.0
+        Authorization: Bearer my_token
+        Content-Type: application/json
+```
